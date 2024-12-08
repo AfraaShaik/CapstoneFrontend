@@ -1,0 +1,83 @@
+<div class="p-6 min-h-screen custom-bg">
+  <!-- Transfer Form -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6 hover:shadow-lg transition duration-300">
+    <h3 class="font-semibold mb-4">Transfer Funds</h3>
+    <label class="block mb-4">
+      From Account:
+      <input [(ngModel)]="transferFromAccount" type="number" class="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 w-full" placeholder="From Account ID"/>
+    </label>
+    <label class="block mb-4">
+      To Account:
+      <input [(ngModel)]="transferToAccount" type="number" class="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 w-full" placeholder="To Account ID"/>
+    </label>
+    <label class="block mb-4">
+      Amount:
+      <input [(ngModel)]="transferAmount" type="number" class="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 w-full" placeholder="Amount"/>
+    </label>
+    <label class="block mb-4">
+      Type:
+      <select [(ngModel)]="transferType" class="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 w-full">
+        <option value="NEFT">NEFT</option>
+        <option value="RTGS">RTGS</option>
+        <option value="IMPS">IMPS</option>
+        <option value="UPI">UPI</option>
+      </select>
+    </label>
+    <button (click)="performTransfer()" class="bg-black text-white px-4 py-2 rounded hover:bg-purple-600 focus:outline-none w-full">Transfer</button>
+    <p class="text-red-500 mt-2" *ngIf="transferError">{{ transferError }}</p>
+    <p class="text-green-500 mt-2" *ngIf="transferSuccess">{{ transferSuccess }}</p>
+  </div>
+
+  <h2 class="text-xl font-bold mb-4 mt-6">Transaction History</h2>
+
+  <!-- If ADMIN, show input to select accountId -->
+  <div *ngIf="role === 'ADMIN'" class="mb-4">
+    <label class="block mb-2 font-semibold">Account ID (for selected customer):</label>
+    <input class="border border-gray-300 rounded p-2 w-full"
+           type="number"
+           [(ngModel)]="selectedAccountId"
+           placeholder="Enter customer account ID" />
+    <button class="bg-blue-500 text-white py-1 px-4 rounded ml-2 hover:bg-blue-600"
+            (click)="fetchTransactions()">Fetch</button>
+  </div>
+
+  <!-- If CUSTOMER, show a dropdown of their accounts -->
+  <div *ngIf="role === 'CUSTOMER'" class="mb-4">
+    <label class="block mb-2 font-semibold">Select an Account:</label>
+    <select [(ngModel)]="selectedAccountId" (change)="fetchTransactions()"
+            class="border border-gray-300 rounded p-2 w-full">
+      <option *ngFor="let acc of userAccounts" [value]="acc.id">
+        Account ID: {{acc.id}} (Balance: {{acc.balance}})
+      </option>
+    </select>
+  </div>
+
+  <p class="text-red-500 mb-4" *ngIf="error">{{ error }}</p>
+
+  <table class="min-w-full bg-white rounded-lg shadow-md border-collapse" *ngIf="transactions.length > 0">
+    <thead class="bg-gray-200 text-gray-700">
+      <tr>
+        <th class="py-3 px-4 text-left">Transaction ID</th>
+        <th class="py-3 px-4 text-left">From Account</th>
+        <th class="py-3 px-4 text-left">To Account</th>
+        <th class="py-3 px-4 text-left">Amount</th>
+        <th class="py-3 px-4 text-left">Type</th>
+        <th class="py-3 px-4 text-left">Status</th>
+        <th class="py-3 px-4 text-left">Timestamp</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-700">
+      <tr *ngFor="let tx of transactions" class="border-b hover:bg-gray-50 transition duration-300">
+        <td class="py-3 px-4">{{ tx.transactionId }}</td>
+        <td class="py-3 px-4">{{ tx.fromAccount }}</td>
+        <td class="py-3 px-4">{{ tx.toAccount }}</td>
+        <td class="py-3 px-4">{{ tx.amount | currency }}</td>
+        <td class="py-3 px-4">{{ tx.type }}</td>
+        <td class="py-3 px-4">{{ tx.status }}</td>
+        <td class="py-3 px-4">{{ tx.timestamp }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="mt-4 text-center" *ngIf="transactions.length === 0 && !error">No transactions found.</p>
+</div>

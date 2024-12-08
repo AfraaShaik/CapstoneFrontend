@@ -1,0 +1,72 @@
+<nav class="bg-purple-600 text-white p-4 flex justify-between items-center shadow-md">
+  <!-- Logo Section -->
+  <a routerLink="/home" class="font-bold text-2xl text-white">
+    Banking System
+  </a>
+
+  <!-- Navbar Links Section -->
+  <div class="relative">
+    <a routerLink="/dashboard" class="mx-3 text-lg hover:text-black">Dashboard</a>
+    <a routerLink="/accounts" class="mx-3 text-lg hover:text-black">Accounts</a>
+    <a routerLink="/transactions" class="mx-3 text-lg hover:text-black">Transactions</a>
+    <a routerLink="/loans" class="mx-3 text-lg hover:text-black">Loans</a>
+    <a routerLink="/cards" class="mx-3 text-lg hover:text-black">Cards</a>
+    <a routerLink="/reports" class="mx-3 text-lg hover:text-black" *ngIf="isAdmin()">Reports</a>
+    <a routerLink="/support-tickets" class="mx-3 text-lg hover:text-black" *ngIf="isLoggedIn()">Support Tickets</a>
+    <a routerLink="/investments" class="mx-3 text-lg hover:text-black" *ngIf="isLoggedIn()">Investments</a>
+
+    <!-- Notifications Button -->
+    <button (click)="toggleNotifications()" class="mx-2 bg-black text-white px-4 py-2 rounded relative hover:bg-purple-700 transition-all duration-300">
+      Notifications
+      <span *ngIf="unreadCount > 0" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">{{ unreadCount }}</span>
+    </button>
+
+    <!-- Notifications Dropdown -->
+    <div *ngIf="showNotifications" class="absolute right-0 mt-2 w-96 p-4 bg-white text-black rounded-lg shadow-xl z-50 transition-all duration-300">
+      <div class="mb-2 flex items-center">
+        <label class="mr-2 font-semibold">Status:</label>
+        <select [(ngModel)]="filterStatus" (change)="loadNotifications()" class="border border-gray-300 rounded p-1 text-purple-800">
+          <option value="">All</option>
+          <option value="UNREAD">UNREAD</option>
+          <option value="READ">READ</option>
+        </select>
+      </div>
+
+      <div *ngIf="notifications.length === 0">
+        <p class="text-sm">No notifications found.</p>
+      </div>
+
+      <ul *ngIf="notifications.length > 0" class="max-h-64 overflow-auto">
+        <li *ngFor="let n of notifications" class="border-b border-gray-200 py-2 hover:bg-purple-100 transition-colors duration-200">
+          <div class="text-sm">
+            <strong>{{ n.type }}:</strong> {{ n.message }}
+          </div>
+          <div class="text-xs text-gray-400">
+            {{ n.timestamp }} | Status: {{ n.status }}
+          </div>
+          <div class="mt-1 flex space-x-2">
+            <button *ngIf="n.status === 'UNREAD'" (click)="markAsRead(n.notificationId)" class="text-blue-500 text-xs underline hover:text-blue-400">Mark as Read</button>
+            <button (click)="deleteNotification(n.notificationId)" class="text-red-500 text-xs underline hover:text-red-700">Delete</button>
+          </div>
+        </li>
+      </ul>
+
+      <div class="mt-2">
+        <button (click)="togglePreferences()" class="text-blue-500 text-xs underline hover:text-blue-400">Preferences</button>
+      </div>
+    </div>
+
+    <!-- Preferences Panel -->
+    <div *ngIf="showPreferences" class="absolute right-0 mt-2 w-64 bg-purple-800 text-white p-4 rounded-lg shadow-xl">
+      <h4 class="font-semibold mb-2">Notification Preferences</h4>
+      <div *ngFor="let pref of notificationTypes" class="flex items-center mb-1">
+        <input type="checkbox" [checked]="pref.enabled" (change)="updatePrefFromEvent(pref.key, $event)" class="mr-2"/>
+        <label>{{ pref.key }}</label>
+      </div>
+      <button (click)="togglePreferences()" class="text-blue-500 text-xs underline mt-2 hover:text-blue-400">Close</button>
+    </div>
+
+    <!-- Logout Button -->
+    <button *ngIf="isLoggedIn()" (click)="logout()" class="mx-2 bg-black text-white px-4 py-2 rounded hover:bg-red-600 transition-all duration-300">Logout</button>
+  </div>
+</nav>

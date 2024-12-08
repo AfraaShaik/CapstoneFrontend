@@ -1,0 +1,107 @@
+<div class="p-6 min-h-screen custom-bg"  >
+  <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Welcome, {{ username }}!</h2>
+  <p class="mb-6 text-center text-gray-600">Choose a section:</p>
+
+  <!-- Services Cards Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    
+    <!-- Accounts Card -->
+    <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 transform hover:scale-105">
+      <div class="flex items-center mb-4">
+        <img alt="Icon representing accounts" class="mr-3 w-10 h-10" src="https://paytmblogcdn.paytm.com/wp-content/uploads/2023/07/Blog_Paytm_What-is-Zero-Balance-Account-All-You-Need-to-Know.jpg"/>
+        <h2 class="text-xl font-bold text-gray-800">Accounts</h2>
+      </div>
+      <p class="text-gray-600 mb-4">
+        View and manage your bank accounts easily from here.
+      </p>
+      <a routerLink="/accounts" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <i class="fas fa-arrow-right text-gray-400 mr-2"></i> Go to Accounts
+      </a>
+    </div>
+    
+    <!-- Transactions Card -->
+    <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 transform hover:scale-105">
+      <div class="flex items-center mb-4">
+        <img alt="Icon representing transactions" class="mr-3 w-10 h-10" src="https://cdn-icons-png.flaticon.com/512/1875/1875444.png"/>
+        <h2 class="text-xl font-bold text-gray-800">Transactions</h2>
+      </div>
+      <p class="text-gray-600 mb-4">
+        Track and manage your transaction history with ease.
+      </p>
+      <a routerLink="/transactions" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <i class="fas fa-arrow-right text-gray-400 mr-2"></i> Go to Transactions
+      </a>
+    </div>
+
+    <!-- Loans Card -->
+    <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 transform hover:scale-105">
+      <div class="flex items-center mb-4">
+        <img alt="Icon representing loans" class="mr-3 w-10 h-10" src="https://www.fincover.com/wp-content/uploads/2020/10/business-loan.png"/>
+        <h2 class="text-xl font-bold text-gray-800">Loans</h2>
+      </div>
+      <p class="text-gray-600 mb-4">
+        Apply for personal loans and track your loan status.
+      </p>
+      <a routerLink="/loans" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <i class="fas fa-arrow-right text-gray-400 mr-2"></i> Go to Loans
+      </a>
+    </div>
+
+    <!-- Cards Card -->
+    <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 transform hover:scale-105">
+      <div class="flex items-center mb-4">
+        <img alt="Icon representing cards" class="mr-3 w-10 h-10" src="https://blogassets.airtel.in/wp-content/uploads/2023/11/Picture1.png"/>
+        <h2 class="text-xl font-bold text-gray-800">Cards</h2>
+      </div>
+      <p class="text-gray-600 mb-4">
+        Manage your credit and debit cards, set limits, and track usage.
+      </p>
+      <a routerLink="/cards" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <i class="fas fa-arrow-right text-gray-400 mr-2"></i> Go to Cards
+      </a>
+    </div>
+
+    <!-- Reports Card (Only for Admin) -->
+    <div *ngIf="role === 'ADMIN'" class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 transform hover:scale-105">
+      <div class="flex items-center mb-4">
+        <img alt="Icon representing reports" class="mr-3 w-10 h-10" src="https://requirements.com/Portals/0/EasyDNNnews/34/img-report.png"/>
+        <h2 class="text-xl font-bold text-gray-800">Reports</h2>
+      </div>
+      <p class="text-gray-600 mb-4">
+        Access detailed financial and operational reports.
+      </p>
+      <a routerLink="/reports" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <i class="fas fa-arrow-right text-gray-400 mr-2"></i> Go to Reports
+      </a>
+    </div>
+
+    <!-- Support Tickets Card -->
+    <div *ngIf="role === 'ADMIN' || role === 'CUSTOMER'" class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 transform hover:scale-105">
+      <div class="flex items-center mb-4">
+        <img alt="Icon representing support tickets" class="mr-3 w-10 h-10" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7IYKAtjY6rJ7ptw0pAbNUC9gJjk-GrRg4pg&s">
+        <h2 class="text-xl font-bold text-gray-800">Support Tickets</h2>
+      </div>
+      <p class="text-gray-600 mb-4">
+        Manage and resolve your customer support tickets.
+      </p>
+      <a routerLink="/support-tickets" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <i class="fas fa-arrow-right text-gray-400 mr-2"></i> Go to Support Tickets
+      </a>
+    </div>
+
+    <!-- Investments Card -->
+    <div *ngIf="role === 'ADMIN' || role === 'CUSTOMER'" class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 transform hover:scale-105">
+      <div class="flex items-center mb-4">
+        <img alt="Icon representing investments" class="mr-3 w-10 h-10" src="https://protium.co.in/wp-content/uploads/2023/09/7-Investment-Tips-for-Entrepreneurs-and-Small-Business-Owners.png"/>
+        <h2 class="text-xl font-bold text-gray-800">Investments</h2>
+      </div>
+      <p class="text-gray-600 mb-4">
+        Explore investment options and track your investment portfolio.
+      </p>
+      <a routerLink="/investments" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <i class="fas fa-arrow-right text-gray-400 mr-2"></i> Go to Investments
+      </a>
+    </div>
+
+  </div>
+</div>

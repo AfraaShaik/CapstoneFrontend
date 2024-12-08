@@ -1,0 +1,63 @@
+<div class="p-6 min-h-screen custom-bg">
+    <h2 class="text-xl font-bold mb-4">Reports (Admin)</h2>
+    <p class="text-red-500 mb-4" *ngIf="error">{{ error }}</p>
+  
+    <!-- Generate Report Form -->
+    <div class="border border-gray-300 p-4 mb-4 rounded">
+      <h3 class="font-semibold mb-2">Generate Report</h3>
+      <label class="block mb-2">
+        Report Type:
+        <select [(ngModel)]="selectedReportType" class="border border-gray-300 rounded p-1 ml-2">
+          <option value="TRANSACTION_SUMMARY">TRANSACTION_SUMMARY</option>
+          <option value="LOAN_SUMMARY">LOAN_SUMMARY</option>
+          <option value="CUSTOMER_ACTIVITY">CUSTOMER_ACTIVITY</option>
+        </select>
+      </label>
+      <button (click)="generateReport()" class="bg-black text-white px-2 py-1 rounded hover:bg-purple-600">Generate</button>
+      <p class="text-red-500 mt-2" *ngIf="generateError">{{ generateError }}</p>
+    </div>
+  
+    <!-- Filter by Type -->
+    <div class="mb-4">
+      <h3 class="font-semibold mb-2">Filter Reports by Type</h3>
+      <label>
+        Report Type:
+        <select [(ngModel)]="filterType" class="border border-gray-300 rounded p-1 ml-2">
+          <option value="">All</option>
+          <option value="TRANSACTION_SUMMARY">TRANSACTION_SUMMARY</option>
+          <option value="LOAN_SUMMARY">LOAN_SUMMARY</option>
+          <option value="CUSTOMER_ACTIVITY">CUSTOMER_ACTIVITY</option>
+        </select>
+      </label>
+      <button (click)="filterReports()" class="bg-black text-white px-2 py-1 rounded hover:bg-purple-600 ml-2">Filter</button>
+    </div>
+  
+    <!-- Display Reports -->
+    <h3 class="font-semibold mb-2">Generated Reports</h3>
+    <table class="min-w-full bg-white border border-gray-200" *ngIf="reports.length > 0">
+      <thead>
+        <tr class="bg-gray-100 border-b border-gray-200">
+          <th class="py-2 px-4 text-left">Report ID</th>
+          <th class="py-2 px-4 text-left">Type</th>
+          <th class="py-2 px-4 text-left">Generated Date</th>
+          <th class="py-2 px-4 text-left">Created By</th>
+          <th class="py-2 px-4 text-left">Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of reports" class="border-b border-gray-200">
+          <td class="py-2 px-4">{{ report.reportId }}</td>
+          <td class="py-2 px-4">{{ report.type }}</td>
+          <td class="py-2 px-4">{{ report.generatedDate }}</td>
+          <td class="py-2 px-4">{{ report.createdBy }}</td>
+          <td class="py-2 px-4">
+            <pre class="text-sm bg-gray-100 p-2 rounded overflow-auto" style="max-width:300px; max-height:150px;">
+  {{ report.data }}
+            </pre>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="mt-4" *ngIf="reports.length === 0 && !error">No reports found.</p>
+  </div>
+  

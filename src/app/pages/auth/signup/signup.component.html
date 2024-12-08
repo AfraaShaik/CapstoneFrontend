@@ -1,0 +1,68 @@
+<div style="background-image: url('https://cdn.prod.website-files.com/5a9ee6416e90d20001b20038/64c21fa2d9517897c63018d8_-13.png'); background-size: cover; background-position: center; background-repeat: no-repeat;" class=" flex items-center justify-center min-h-screen">
+  <div class="flex flex-col md:flex-row bg-white shadow-2xl shadow-black rounded-lg w-full max-w-4xl transition-transform transform hover:scale-105">
+    
+    <!-- Sign Up Form -->
+    <div class="p-10 w-full md:w-1/2">
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Sign Up</h1>
+      
+      <!-- Full Name Input -->
+      <div class="relative mb-4">
+        <input 
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          type="text" 
+          [(ngModel)]="fullName" 
+          placeholder="Full Name" 
+          required>
+      </div>
+      
+      <!-- Email Input -->
+      <div class="relative mb-4">
+        <input 
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          type="email" 
+          [(ngModel)]="email" 
+          placeholder="Email" 
+          required>
+        
+      </div>
+
+      <!-- Password Input -->
+      <div class="relative mb-6">
+        <input 
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          type="password" 
+          [(ngModel)]="password" 
+          placeholder="Password" 
+          required>
+        
+      </div>
+
+      <!-- Sign Up Button -->
+      <button 
+        class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg hover:bg-gradient-to-r hover:from-blue-700 hover:to-purple-700 transition duration-200 ease-in-out" 
+        (click)="signup()">
+        Sign Up
+      </button>
+
+      <!-- Success/Error Messages -->
+      <p class="text-green-500 mt-3 text-center" *ngIf="message">{{ message }}</p>
+      <p class="text-red-500 mt-3 text-center" *ngIf="error">{{ error }}</p>
+      
+      <!-- Login Link -->
+      <p class="mt-6 text-center text-gray-600">
+        Already have an account? 
+        <a class="text-blue-600 font-semibold hover:underline" routerLink="/login">Login</a>
+      </p>
+    </div>
+
+    <!-- Illustration Section -->
+    <div class="hidden md:flex md:w-1/2 bg-gray-100 rounded-r-lg items-center justify-center p-0">
+      <div class="w-full h-full">
+        <img 
+          alt="Illustration for signing up process" 
+          src="https://cdn-biz2x.biz2credit.com/wp-content/uploads/2023/08/MicrosoftTeams-image-21-scaled.jpg" 
+          class="object-cover w-full h-full rounded-r-lg" />
+      </div>
+    </div>
+  </div>
+</div>

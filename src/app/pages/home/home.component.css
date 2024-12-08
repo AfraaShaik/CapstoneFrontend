@@ -1,0 +1,4 @@
+footer {
+    position: relative; /* Ensure it's not shifting due to static positioning */
+    margin-bottom: 0;
+  }

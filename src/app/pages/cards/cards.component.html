@@ -1,0 +1,148 @@
+<div class="p-6 min-h-screen bg-gradient-to-r from-blue-50 to-white">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Cards</h2>
+
+  <!-- CUSTOMER VIEW -->
+  <div *ngIf="role === 'CUSTOMER'">
+    <!-- Apply for card form -->
+    <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 mb-6">
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Apply for a Card</h3>
+      
+      <label class="block mb-4">
+        <span class="text-gray-700">Card Type</span>
+        <select [(ngModel)]="cardType" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="" disabled selected>Select Card Type</option>
+          <option value="DEBIT">Debit</option>
+          <option value="CREDIT">Credit</option>
+        </select>
+      </label>
+      
+      <button 
+        (click)="applyForCard()" 
+        class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition duration-200">
+        Apply
+      </button>
+      
+      <p class="text-red-500 mt-3" *ngIf="applyError">{{ applyError }}</p>
+    </div>
+
+    <!-- My Cards -->
+    <h3 class="text-xl font-semibold mb-4 text-gray-800">My Cards</h3>
+    <p class="text-red-500 mb-4" *ngIf="error">{{ error }}</p>
+    
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white rounded-lg shadow-md border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+          <tr>
+            <th class="py-3 px-4 text-left">Card ID</th>
+            <th class="py-3 px-4 text-left">Type</th>
+            <th class="py-3 px-4 text-left">Card Number</th>
+            <th class="py-3 px-4 text-left">Expiry Date</th>
+            <th class="py-3 px-4 text-left">Status</th>
+            <th class="py-3 px-4 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700">
+          <tr *ngFor="let card of cards" class="border-b hover:bg-gray-50 transition duration-300">
+            <td class="py-3 px-4">{{ card.cardId }}</td>
+            <td class="py-3 px-4">{{ card.cardType }}</td>
+            <td class="py-3 px-4">{{ card.cardNumber }}</td>
+            <td class="py-3 px-4">{{ card.expiryDate }}</td>
+            <td class="py-3 px-4">{{ card.status }}</td>
+            <td class="py-3 px-4">
+              <!-- Actions based on card status -->
+              <button 
+                (click)="blockCard(card.cardId)" 
+                class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded mr-2" 
+                *ngIf="card.status === 'ACTIVE'">
+                Block
+              </button>
+              <button 
+                (click)="reportLost(card.cardId)" 
+                class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded mr-2" 
+                *ngIf="card.status === 'ACTIVE'">
+                Report Lost
+              </button>
+              
+              <!-- Replace Card Section -->
+              <div *ngIf="replaceCardId === card.cardId && card.status === 'ACTIVE'" class="mt-4 p-4 bg-gray-50 rounded-lg">
+                <h4 class="font-semibold mb-2 text-gray-800">Replace Card</h4>
+                
+                <label class="block mb-2">
+                  New Card Type:
+                  <select [(ngModel)]="replaceCardType" class="block w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>Select New Card Type</option>
+                    <option value="DEBIT">Debit</option>
+                    <option value="CREDIT">Credit</option>
+                  </select>
+                </label>
+                
+                <button 
+                  (click)="replaceCard(card.cardId)" 
+                  class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition duration-200">
+                  Replace
+                </button>
+              </div>
+              
+              <button 
+                (click)="startReplace(card.cardId)" 
+                *ngIf="replaceCardId !== card.cardId && card.status === 'ACTIVE'" 
+                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2">
+                Replace Card
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <p class="mt-4 text-center text-gray-600" *ngIf="cards.length === 0 && !error">No cards found.</p>
+    </div>
+  </div>
+
+  <!-- ADMIN VIEW -->
+  <div *ngIf="role === 'ADMIN'">
+    <h3 class="text-xl font-semibold mb-4 text-gray-800">All Cards</h3>
+    <p class="text-red-500 mb-4" *ngIf="error">{{ error }}</p>
+    
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white rounded-lg shadow-md border-collapse">
+        <thead class="bg-gray-100 text-gray-700">
+          <tr>
+            <th class="py-3 px-4 text-left">Card ID</th>
+            <th class="py-3 px-4 text-left">User ID</th>
+            <th class="py-3 px-4 text-left">Type</th>
+            <th class="py-3 px-4 text-left">Card Number</th>
+            <th class="py-3 px-4 text-left">Expiry Date</th>
+            <th class="py-3 px-4 text-left">Status</th>
+            <th class="py-3 px-4 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700">
+          <tr *ngFor="let card of cards" class="border-b hover:bg-gray-50 transition duration-300">
+            <td class="py-3 px-4">{{ card.cardId }}</td>
+            <td class="py-3 px-4">{{ card.userId }}</td>
+            <td class="py-3 px-4">{{ card.cardType }}</td>
+            <td class="py-3 px-4">{{ card.cardNumber }}</td>
+            <td class="py-3 px-4">{{ card.expiryDate }}</td>
+            <td class="py-3 px-4">{{ card.status }}</td>
+            <td class="py-3 px-4">
+              <button 
+                *ngIf="card.status === 'PENDING'" 
+                (click)="approveCard(card.cardId)" 
+                class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded mr-2">
+                Approve
+              </button>
+              <button 
+                *ngIf="card.status === 'PENDING'" 
+                (click)="rejectCard(card.cardId)" 
+                class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded">
+                Reject
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <p class="mt-4 text-center text-gray-600" *ngIf="cards.length === 0 && !error">No cards found.</p>
+    </div>
+  </div>
+</div>

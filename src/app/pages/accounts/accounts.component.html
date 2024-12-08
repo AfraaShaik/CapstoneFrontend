@@ -1,0 +1,55 @@
+<div class="p-6 min-h-screen custom-bg">
+  <!-- Create Account Form -->
+  <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300">
+    <h3 class="font-semibold mb-2">Create Account</h3>
+    <label class="block mb-2">
+      Account Type:
+      <input [(ngModel)]="newAccountType" class="border border-gray-300 rounded p-2 ml-2 focus:ring-2 focus:ring-blue-500" placeholder="SAVINGS/CURRENT" />
+    </label>
+    <label class="block mb-2">
+      Initial Balance:
+      <input [(ngModel)]="newAccountBalance" type="number" class="border border-gray-300 rounded p-2 ml-2 focus:ring-2 focus:ring-blue-500" placeholder="Initial Balance" />
+    </label>
+    <button (click)="createAccount()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none">Create Account</button>
+    <p class="text-red-500 mt-2" *ngIf="createError">{{ createError }}</p>
+  </div>
+
+  <h2 class="text-xl font-bold mb-4 mt-6">My Accounts</h2>
+  <!-- Accounts List -->
+  <table class="min-w-full bg-white rounded-lg shadow-md border-collapse">
+    <thead class="bg-gray-200 text-gray-700">
+      <tr>
+        <th class="py-3 px-4 text-left">Account ID</th>
+        <th class="py-3 px-4 text-left">User ID</th>
+        <th class="py-3 px-4 text-left">Type</th>
+        <th class="py-3 px-4 text-left">Balance</th>
+        <th class="py-3 px-4 text-left">Status</th>
+        <th class="py-3 px-4 text-left">Created Date</th>
+        <th class="py-3 px-4 text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-700">
+      <tr *ngFor="let acc of accounts" class="border-b hover:bg-gray-50 transition duration-300">
+        <td class="py-3 px-4">{{ acc.id }}</td>
+        <td class="py-3 px-4">{{ acc.userId }}</td>
+        <td class="py-3 px-4">{{ acc.accountType }}</td>
+        <td class="py-3 px-4">{{ acc.balance | currency }}</td>
+        <td class="py-3 px-4">{{ acc.status }}</td>
+        <td class="py-3 px-4">{{ acc.createdDate }}</td>
+        <td class="py-3 px-4">
+          <div class="space-x-2">
+            <label class="mr-2">
+              Amount:
+              <input [(ngModel)]="transactionAmount" type="number" class="border border-gray-300 rounded p-2 w-24 focus:ring-2 focus:ring-blue-500 ml-2" />
+            </label>
+            <button (click)="deposit(acc.id)" class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded focus:outline-none">Deposit</button>
+            <button (click)="withdraw(acc.id)" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded focus:outline-none">Withdraw</button>
+            <button (click)="deleteAccount(acc.id)" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded focus:outline-none">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="text-red-500 mt-4" *ngIf="error">{{ error }}</p>
+</div>

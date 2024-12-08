@@ -1,0 +1,102 @@
+<div class="p-8 min-h-screen custom-bg">
+    <h2 class="text-xl font-bold mb-4">Investments</h2>
+    <p class="text-red-500 mb-4" *ngIf="error">{{ error }}</p>
+  
+    <!-- Market Trends Section -->
+    <div class="border border-gray-300 p-4 mb-4 rounded">
+      <h3 class="font-semibold mb-2">Market Trends & Interest Rates</h3>
+      <button (click)="loadMarketTrends()" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mb-2">Refresh Market Data</button>
+      <div *ngIf="marketData">
+        <h4 class="font-semibold">Interest Rates:</h4>
+        <ul class="list-disc pl-6 mb-2">
+          <li *ngFor="let item of interestKeys">{{ item }}: {{ marketData.interestRates[item] }}% </li>
+        </ul>
+        <h4 class="font-semibold">Market Trends:</h4>
+        <ul class="list-disc pl-6">
+          <li *ngFor="let item of trendKeys">{{ item }}: {{ marketData.marketTrends[item] }}</li>
+        </ul>
+      </div>
+    </div>
+  
+    <!-- CUSTOMER VIEW -->
+    <div *ngIf="role === 'CUSTOMER'">
+      <!-- Create Investment Form -->
+      <div class="border border-black p-4 mb-4 rounded-lg bg-white shadow-md rounded-lg hover:shadow-lg transition duration-300">
+        <h3 class="font-semibold mb-2">Create New Investment</h3>
+        <label class="block mb-2">
+          Investment Type:
+          <select [(ngModel)]="investmentType" class="border border-gray-300 rounded p-1 ml-2">
+            <option value="FIXED_DEPOSIT">FIXED_DEPOSIT</option>
+            <option value="MUTUAL_FUND">MUTUAL_FUND</option>
+            <option value="BOND">BOND</option>
+          </select>
+        </label>
+        <label class="block mb-2">
+          Amount:
+          <input [(ngModel)]="amount" type="number" class="border border-gray-300 rounded p-1 ml-2" placeholder="Amount" />
+        </label>
+        <label class="block mb-2">
+          Maturity Date (YYYY-MM-DD hh:mm:ss):
+          <input [(ngModel)]="maturityDate" class="border border-gray-300 rounded p-1 ml-2" placeholder="e.g. 2025-12-31T00:00:00" />
+        </label>
+        <button (click)="createInvestment()" class="bg-black text-white px-2 py-1 rounded hover:bg-purple-600">Create</button>
+        <p class="text-red-500 mt-2" *ngIf="createError">{{ createError }}</p>
+      </div>
+  
+      <h3 class="font-semibold mb-2">My Investments</h3>
+      <table class="min-w-full bg-white border border-gray-200" *ngIf="investments.length > 0">
+        <thead>
+          <tr class="bg-gray-100 border-b border-gray-200">
+            <th class="py-2 px-4 text-left">Investment ID</th>
+            <th class="py-2 px-4 text-left">Type</th>
+            <th class="py-2 px-4 text-left">Amount</th>
+            <th class="py-2 px-4 text-left">Start Date</th>
+            <th class="py-2 px-4 text-left">Maturity Date</th>
+            <th class="py-2 px-4 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of investments" class="border-b border-gray-200">
+            <td class="py-2 px-4">{{ i.investmentId }}</td>
+            <td class="py-2 px-4">{{ i.investmentType }}</td>
+            <td class="py-2 px-4">{{ i.amount }}</td>
+            <td class="py-2 px-4">{{ i.startDate }}</td>
+            <td class="py-2 px-4">{{ i.maturityDate }}</td>
+            <td class="py-2 px-4">{{ i.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="mt-4" *ngIf="investments.length === 0 && !error">No investments found.</p>
+    </div>
+  
+    <!-- ADMIN VIEW -->
+    <div *ngIf="role === 'ADMIN'">
+      <h3 class="font-semibold mb-2">All Investments</h3>
+      <table class="min-w-full bg-white border border-gray-200" *ngIf="investments.length > 0">
+        <thead>
+          <tr class="bg-gray-100 border-b border-gray-200">
+            <th class="py-2 px-4 text-left">Investment ID</th>
+            <th class="py-2 px-4 text-left">User ID</th>
+            <th class="py-2 px-4 text-left">Type</th>
+            <th class="py-2 px-4 text-left">Amount</th>
+            <th class="py-2 px-4 text-left">Start Date</th>
+            <th class="py-2 px-4 text-left">Maturity Date</th>
+            <th class="py-2 px-4 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of investments" class="border-b border-gray-200">
+            <td class="py-2 px-4">{{ i.investmentId }}</td>
+            <td class="py-2 px-4">{{ i.userId }}</td>
+            <td class="py-2 px-4">{{ i.investmentType }}</td>
+            <td class="py-2 px-4">{{ i.amount }}</td>
+            <td class="py-2 px-4">{{ i.startDate }}</td>
+            <td class="py-2 px-4">{{ i.maturityDate }}</td>
+            <td class="py-2 px-4">{{ i.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="mt-4" *ngIf="investments.length === 0 && !error">No investments found.</p>
+    </div>
+  </div>
+  
